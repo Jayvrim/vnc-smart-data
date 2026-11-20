@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: vnc-smart-data
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements-production.txt
+    startCommand: gunicorn --chdir backend --bind 0.0.0.0:$PORT --workers 1 --threads 4 app:app
+    healthCheckPath: /api/health
+    envVars:
+      - key: SMARTDATA_SECRET
+        generateValue: true
+      - key: INTERSWITCH_MODE
+        value: TEST
+      - key: SMARTDATA_ALLOW_DEMO_WALLET
+        value: "1"
+      - key: SMARTDATA_ALLOW_DEMO_USAGE
+        value: "1"
+      - key: SMARTDATA_ALLOW_DEMO_CREDIT
+        value: "1"

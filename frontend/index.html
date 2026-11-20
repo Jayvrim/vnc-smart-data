@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07152f">
+  <meta name="description" content="VNC — one app. one data experience.">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/assets/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/icon-192.png">
+  <title>VNC — Virtual Network Connection</title>
+  <link rel="stylesheet" href="/styles.css?v=14">
+</head>
+<body>
+  <div class="phone-shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="/assets/vnc-logo.jpg" alt="VNC logo">
+        <div><span>VNC</span><small>VIRTUAL NETWORK CONNECTION</small></div>
+      </div>
+      <div class="topbar-actions">
+        <button class="connection-status-button offline" id="connectionStatusButton" aria-label="VNC connection offline. Click to connect">
+          <span class="connection-status-dot"></span><span id="headerConnectionStatus">Offline</span>
+        </button>
+        <button class="icon-button" id="notificationsBtn" aria-label="Notifications">
+        <span class="bell">●</span><b id="noticeCount">0</b>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="page active" id="homePage">
+        <div class="greeting"><span>Good day,</span> <strong id="displayName">Member</strong></div>
+
+        <article class="hero-card" id="heroCard">
+          <div class="hero-orbits"></div>
+          <div class="hero-head">
+            <div>
+              <span class="eyebrow">AVAILABLE BALANCE</span>
+              <h1><span id="balanceValue">0.000</span> <small>GB</small></h1>
+            </div>
+            <span class="status-chip" id="connectionChip">Offline</span>
+          </div>
+          <div class="hero-usage-summary"><span>Data used</span><strong id="homeUsageValue">0.000 GB</strong></div>
+          <div class="hero-grid">
+            <div>
+              <small>Current route</small>
+              <strong id="currentRoute">Not selected</strong>
+            </div>
+            <div>
+              <small>Network state</small>
+              <strong id="networkType">Unknown</strong>
+            </div>
+          </div>
+          <div class="signal-row">
+            <div class="signal-bars"><i></i><i></i><i></i><i></i></div>
+            <div>
+              <strong id="measurementValue">No measurement</strong>
+              <small id="measurementNote">Browser measurements only</small>
+            </div>
+          </div>
+          <button class="primary-button connect-button" id="connectBtn" aria-pressed="false">Connect</button>
+          <button class="ghost-button" id="buyDataBtn">Buy data</button>
+        </article>
+
+        <div class="section-heading">
+          <h2>Live connection</h2>
+          <button class="text-button" id="openConnectionBtn">View details</button>
+        </div>
+        <article class="connection-card">
+          <div class="route-visual">
+            <span class="route-dot active"></span><span class="route-line"></span><span class="route-dot"></span><span class="route-line"></span><span class="route-dot"></span>
+          </div>
+          <div>
+            <strong id="connectionTitle">Ready to connect</strong>
+            <p id="connectionDescription">Route switching is simulated until an authorized carrier integration exists.</p>
+          </div>
+        </article>
+
+        <div class="section-heading">
+          <h2>Your plan</h2>
+        </div>
+        <article class="plan-summary" id="planSummary">
+          <div class="plan-icon">◈</div>
+          <div><small>Active package</small><strong id="activePlanName">No active plan</strong></div>
+          <button class="round-arrow" data-page-target="plans">›</button>
+        </article>
+      </section>
+
+      <section class="page" id="plansPage">
+        <div class="page-heading">
+          <span>VNC wallet</span>
+          <h1>Choose a plan</h1>
+        </div>
+        <div class="mode-notice">VNC prices · approved tariffs will replace these values</div>
+        <div id="plansList" class="plans-list"></div>
+      </section>
+
+      <section class="page" id="routePage">
+        <div class="page-heading">
+          <span>Smart Route AI</span>
+          <h1>Connection</h1>
+        </div>
+        <article class="route-card">
+          <div class="route-score-ring"><strong id="routeScore">—</strong><small>Mbps</small></div>
+          <div><span class="eyebrow-dark">CURRENT ROUTE</span><h2 id="selectedRouteName">Not selected</h2><p id="routeExplanation">Choose a simulated route to see the AI explanation.</p></div>
+        </article>
+        <div class="section-heading"><h2>Network quality</h2><span class="simulation-tag">SIMULATION</span></div>
+        <article class="quality-card" id="qualityCard">
+          <div class="quality-heading">
+            <div><span class="eyebrow-dark">SIMULATED SIGNAL</span><strong id="qualityStatus">Ready</strong></div>
+            <strong class="quality-percent"><span id="qualityValue">—</span><small>%</small></strong>
+          </div>
+          <div class="quality-meter" role="progressbar" aria-label="Simulated signal strength" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="qualityMeterFill"></i></div>
+          <div class="quality-bars" id="qualityBars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="quality-meta"><span id="qualityRoute">No route active</span><span id="qualityLatency">Latency: —</span></div>
+          <p id="qualityExplanation">Connect to compare simulated 5G and 4G speeds and automatically select the fastest.</p>
+          <small class="quality-disclaimer" id="qualityAutoStatus">Automatic 5G/4G selection is demo-only. No carrier network is changed.</small>
+        </article>
+        <div class="section-heading"><h2>Fastest network comparison</h2><span class="simulation-tag">DEMO DATA</span></div>
+        <div class="network-comparison" id="networkCandidates" aria-live="polite">
+          <article class="network-candidate" id="network5GCard">
+            <div class="network-candidate-heading"><strong>5G</strong><span id="network5GBadge">WAITING</span></div>
+            <div class="network-candidate-metric"><span>Download</span><strong id="network5GSpeed">— Mbps</strong></div>
+            <div class="network-candidate-metric"><span>Latency</span><strong id="network5GLatency">— ms</strong></div>
+            <div class="network-candidate-metric"><span>Signal</span><strong id="network5GSignal">—%</strong></div>
+          </article>
+          <article class="network-candidate" id="network4GCard">
+            <div class="network-candidate-heading"><strong>4G</strong><span id="network4GBadge">WAITING</span></div>
+            <div class="network-candidate-metric"><span>Download</span><strong id="network4GSpeed">— Mbps</strong></div>
+            <div class="network-candidate-metric"><span>Latency</span><strong id="network4GLatency">— ms</strong></div>
+            <div class="network-candidate-metric"><span>Signal</span><strong id="network4GSignal">—%</strong></div>
+          </article>
+        </div>
+        <small class="quality-disclaimer">Smart Route selects the highest simulated download speed (latency breaks ties). These are demo values, not live carrier measurements or a real 4G/5G switch.</small>
+      </section>
+
+      <section class="page" id="usagePage">
+        <div class="page-heading">
+          <span>My account</span>
+          <h1>Usage & wallet</h1>
+        </div>
+        <article class="usage-card">
+          <div class="usage-top"><span>VNC cash wallet</span><strong id="cashWalletValue">₦100,000</strong></div>
+          <p class="quality-disclaimer">The ₦100,000 starting demo funds are for testing only, not cash, redeemable, or transferable. Interswitch top-ups are added only after server verification.</p>
+          <button class="secondary-button" id="walletTopupBtn">Add money with Interswitch</button>
+        </article>
+        <article class="usage-card">
+          <div class="usage-top"><span>Data used</span><strong><span id="usageTotal">0.000</span> GB</strong></div>
+          <div class="usage-track" id="usageTrack" role="progressbar" aria-label="Share of wallet data used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="usageTrackBar"></i></div>
+          <div class="usage-balance-row"><span>Available balance</span><strong id="usageBalance">0.000 GB</strong></div>
+          <p id="usageCaption">Usage is not being measured on this device. Connect to start automatic demo usage.</p>
+          <small class="quality-disclaimer" id="automaticUsageStatus">While the app is open and connected, demo usage updates by 0.005 GB every 30 seconds. Actual phone traffic is not measured.</small>
+        </article>
+
+        <div class="section-heading"><h2>Payment activity</h2></div>
+        <article class="activity-card" id="paymentActivity">No transactions yet.</article>
+
+        <div class="section-heading"><h2>Account</h2></div>
+        <button class="settings-row" id="profileBtn"><span>◯ <b>Profile & security</b></span><em>›</em></button>
+        <button class="settings-row" id="adminBtn" hidden><span>▦ <b>Administration</b></span><em>›</em></button>
+        <button class="settings-row danger" id="logoutBtn"><span>↪ <b>Sign out</b></span><em>›</em></button>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="nav-item active" data-page="home"><span>⌂</span>Home</button>
+      <button class="nav-item" data-page="plans"><span>◈</span>Plans</button>
+      <button class="nav-item" data-page="route"><span>⌁</span>Route</button>
+      <button class="nav-item" data-page="usage"><span>▤</span>Account</button>
+    </nav>
+  </div>
+
+  <div class="modal" id="authModal" role="dialog" aria-modal="true">
+    <div class="auth-sheet">
+      <img src="/assets/vnc-logo.jpg" alt="VNC logo">
+      <h1 id="authTitle">Welcome to VNC</h1>
+      <p id="authSubtitle">Create your secure account to begin.</p>
+      <form id="authForm">
+        <label id="nameField"><span>Full name</span><input id="authName" autocomplete="name"></label>
+        <label><span>Email address</span><input id="authEmail" type="email" autocomplete="email" required></label>
+        <label class="password-field"><span>Password</span><input id="authPassword" type="password" minlength="8" autocomplete="current-password" required><button type="button" id="togglePassword" aria-label="Show password" aria-pressed="false">Show</button></label>
+        <button class="primary-button" type="submit" id="authSubmit">Create account</button>
+      </form>
+      <button class="auth-switch" id="authSwitch">Already have an account? Sign in</button>
+      <button class="auth-switch" id="forgotPassword">Forgot password?</button>
+      <div class="inline-status" id="authStatus"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="checkoutModal" role="dialog" aria-modal="true">
+    <div class="sheet">
+      <button class="sheet-close" id="closeCheckout">×</button>
+      <span class="eyebrow-dark">SECURE CHECKOUT</span>
+      <h2 id="checkoutPlanName">Weekly access</h2>
+      <div class="checkout-summary"><span>Amount</span><strong id="checkoutAmount">₦1,500</strong></div>
+      <div class="checkout-summary"><span>VNC wallet balance</span><strong id="checkoutWalletBalance">₦0</strong></div>
+      <button class="secondary-button" id="walletPayBtn">Pay with VNC wallet</button>
+      <button class="primary-button" id="interswitchPayBtn">Continue to Interswitch</button>
+      <button class="secondary-button demo-credit-button" id="demoCreditBtn">Add demo data · no payment</button>
+      <p class="demo-copy">Demo data is simulated for testing and does not process a payment. Real purchases use Interswitch.</p>
+      <div class="inline-status" id="checkoutStatus"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/app.js?v=20"></script>
+</body>
+</html>
